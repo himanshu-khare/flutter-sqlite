@@ -1,0 +1,27 @@
+name: fluttersqlite
+description: A new Flutter project.
+version: 1.0.0+1
+environment: 
+  sdk: '>=3.0.0 <3.16.0'
+dependencies: 
+  flutter: 
+    sdk: flutter
+  flutter_svg: ^1.1.6
+  carousel_slider: ^4.0.0
+  smooth_page_indicator: ^1.0.0+2
+  flutter_bloc: ^8.0.0
+  sqflite: ^2.3.0
+  path: ^1.8.3
+dev_dependencies: 
+  flutter_test: 
+    sdk: flutter
+flutter: 
+  uses-material-design: true
+  assets: 
+    - assets/
+    - assets/images/
+  fonts: 
+    - family: Taviraj
+      fonts: 
+        - asset: assets/fonts/TavirajRegular.ttf
+          weight: 400
