@@ -11,7 +11,9 @@ class HomeScreen extends StatelessWidget {
   HomeScreen(
     this._homeCubit, {
     Key? key,
-  }) : super(key: key,);
+  }) : super(
+          key: key,
+        );
 
   final HomeCubit _homeCubit;
 
@@ -19,6 +21,10 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
     return BlocBuilder<HomeCubit, HomeState>(
+      buildWhen: (previousState, newState) {
+        //build when previos is initial or new state team index changed 
+        return previousState is HomeInitialState||(previousState as HomeLoadedState).teamIndex!=(newState as HomeLoadedState).teamIndex;
+      },
       builder: (context, state) {
         //Show the loading indicator when loading data
         if (state is HomeInitialState) {
@@ -38,8 +44,7 @@ class HomeScreen extends StatelessWidget {
             backgroundColor: _homeCubit.getCurrentTeamColor(),
           ),
           body: Center(
-            
-            child: _buildSliderTeams(context,state as HomeLoadedState),
+            child: _buildSliderTeams(context, state as HomeLoadedState),
           ),
         );
       },
@@ -47,53 +52,53 @@ class HomeScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildSliderTeams(BuildContext context,HomeLoadedState state) {
+  Widget _buildSliderTeams(BuildContext context, HomeLoadedState state) {
     return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            //show the carousel for sliding teams
-            CarouselSlider.builder(
-              options: CarouselOptions(
-                height: 490.v,
-                initialPage: 0,
-                autoPlay: false,
-                viewportFraction: 1.0,
-                enableInfiniteScroll: true,
-                scrollDirection: Axis.horizontal,
-                onPageChanged: (
-                  index,
-                  reason,
-                ) {
-                  //update the current team index 
-                  _homeCubit.updateTeamIndex(index,_homeCubit);
-                },
-              ),
-              carouselController: _homeCubit.carouselController,
-              itemCount: state.teams?.length,
-              itemBuilder: (context, index, realIndex) {
-                final team = state.teams![index];
-                return BuildTeamItemWidget(_homeCubit,team: team);
-              },
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        //show the carousel for sliding teams
+        CarouselSlider.builder(
+          options: CarouselOptions(
+            height: 490.v,
+            initialPage: 0,
+            autoPlay: false,
+            viewportFraction: 1.0,
+            enableInfiniteScroll: true,
+            scrollDirection: Axis.horizontal,
+            onPageChanged: (
+              index,
+              reason,
+            ) {
+              //update the current team index
+              _homeCubit.updateTeamIndex(index, _homeCubit);
+            },
+          ),
+          carouselController: _homeCubit.carouselController,
+          itemCount: state.teams?.length,
+          itemBuilder: (context, index, realIndex) {
+            final team = state.teams![index];
+            return BuildTeamItemWidget(_homeCubit, team: team);
+          },
+        ),
+        SizedBox(height: 16.v),
+        //dots indicator
+        SizedBox(
+          height: 6.v,
+          child: AnimatedSmoothIndicator(
+            activeIndex: _homeCubit.teamIndex,
+            count: state.teams!.length,
+            axisDirection: Axis.horizontal,
+            effect: ScrollingDotsEffect(
+              spacing: 7,
+              activeDotColor: appTheme.white,
+              dotColor: appTheme.grayC2,
+              dotHeight: 6.v,
+              activeDotScale: 1.5.v,
+              dotWidth: 6.h,
             ),
-            SizedBox(height: 16.v),
-            //dots indicator
-            SizedBox(
-              height: 6.v,
-              child: AnimatedSmoothIndicator(
-                activeIndex: _homeCubit.teamIndex,
-                count: state.teams!.length,
-                axisDirection: Axis.horizontal,
-                effect: ScrollingDotsEffect(
-                  spacing: 7,
-                  activeDotColor: appTheme.white,
-                  dotColor: appTheme.grayC2,
-                  dotHeight: 6.v,
-                  activeDotScale: 1.5.v,
-                  dotWidth: 6.h,
-                ),
-              ),
-            ),
-          ],
-        );
+          ),
+        ),
+      ],
+    );
   }
 }

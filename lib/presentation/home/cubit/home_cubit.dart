@@ -21,7 +21,7 @@ class HomeCubit extends Cubit<HomeState> with PlayerMixin, TeamMixin {
   }
 
   void update() {
-    emit(HomeLoadedState(teams: allTeam));
+    emit(HomeLoadedState(teams: allTeam,teamIndex: teamIndex));
   }
 
   Color getCurrentTeamColor() {

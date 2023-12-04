@@ -49,44 +49,43 @@ class BuildTeamItemWidget extends StatelessWidget {
 
   BlocSelector<HomeCubit, HomeState, int> _buildPlayersInfo() {
     return BlocSelector<HomeCubit, HomeState, int>(
-          selector: (state) {
-            return team.playerIndex;
-          },
-          builder: (context, state) {
-            return Container(
-             
-              padding: EdgeInsets.symmetric(
-                horizontal: 17.h,
-                vertical: 17.v,
-              ),
-              decoration: AppDecoration.outlineWhite.copyWith(
-                  borderRadius: BorderRadiusStyle.roundedBorder25,
-                  color: _homeCubit.getCurrentTeamColor()),
-              child: Column(
+      selector: (state) {
+        return team.playerIndex;
+      },
+      builder: (context, state) {
+        return Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 17.h,
+            vertical: 17.v,
+          ),
+          decoration: AppDecoration.outlineWhite.copyWith(
+              borderRadius: BorderRadiusStyle.roundedBorder25,
+              color: _homeCubit.getCurrentTeamColor()),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              //build total player
+              _buildTotalPlayer(),
+              SizedBox(height: 11.v),
+              //build slider
+              _buildSliderIndicator(),
+              SizedBox(height: 64.v),
+              Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  //build total player
-                  _buildTotalPlayer(),
-                  SizedBox(height: 11.v),
-                  //build slider
-                  _buildSliderIndicator(),
-                  SizedBox(height: 64.v),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      //current player name
-                      _buildPlayeName(),
-                      SizedBox(height: 31.v),
-                      //current player score
-                      _buildPlayerScore(),
-                      SizedBox(height: 85.v),
-                    ],
-                  ),
+                  //current player name
+                  _buildPlayeName(),
+                  SizedBox(height: 31.v),
+                  //current player score
+                  _buildPlayerScore(),
+                  SizedBox(height: 85.v),
                 ],
               ),
-            );
-          },
+            ],
+          ),
         );
+      },
+    );
   }
 
   Padding _buildPlayerScore() {
@@ -115,7 +114,7 @@ class BuildTeamItemWidget extends StatelessWidget {
             height: 42.adaptSize,
             width: 42.adaptSize,
             onTap: () {
-               //decrement player score
+              //decrement player score
               _homeCubit.decPlayerScore(
                   team.players![team.playerIndex], _homeCubit);
             },
@@ -125,13 +124,17 @@ class BuildTeamItemWidget extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(
-              left: 28.h,
-              right:28.h
-            ),
-            child: Text(
-              "${team.players![team.playerIndex].score}",
-              style: theme.textTheme.titleLarge,
+            padding: EdgeInsets.only(left: 28.h, right: 28.h),
+            child: BlocSelector<HomeCubit, HomeState, String?>(
+              selector: (state) {
+                return team.players![team.playerIndex].score;
+              },
+              builder: (context, state) {
+                return Text(
+                  "${team.players![team.playerIndex].score}",
+                  style: theme.textTheme.titleLarge,
+                );
+              },
             ),
           ),
           CustomIconButtonWidget(
