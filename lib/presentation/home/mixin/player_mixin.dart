@@ -27,7 +27,7 @@ mixin PlayerMixin{
   incPlayerScore(Player player,HomeCubit homeCubit) {
     player.score = (int.parse(player.score!) + 1).toString();
     homeCubit.update();
-    homeCubit.dbHelper.updatePlayerByTeamId(player);
+    homeCubit.appRepository.updatePlayerByTeamId(player);
   }
 
   decPlayerScore(Player player,HomeCubit homeCubit) {
@@ -37,6 +37,6 @@ mixin PlayerMixin{
       player.score = (int.parse(player.score ?? "1") - 1).toString();
     }
     homeCubit.update();
-    homeCubit.dbHelper.updatePlayerByTeamId(player);
+    homeCubit.appRepository.updatePlayerByTeamId(player);
   }
 }

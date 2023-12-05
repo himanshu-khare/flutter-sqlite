@@ -1,6 +1,5 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:fluttersqlite/core/constants/constants.dart';
-import 'package:fluttersqlite/data/local/database_helper.dart';
 import 'package:fluttersqlite/domain/entities/teams_data_model/team.dart';
 import 'package:fluttersqlite/domain/entities/teams_data_model/teams_data_model.dart';
 import 'package:fluttersqlite/presentation/home/cubit/home_cubit.dart';
@@ -10,7 +9,6 @@ mixin TeamMixin {
   late var allTeam = <Team>[];
 
   final carouselController = CarouselController();
-  DatabaseHelper dbHelper = DatabaseHelper.instance;
 
   incTeamIndex(HomeCubit homeCubit) {
     if (teamIndex < allTeam.length - 1) {
@@ -24,10 +22,10 @@ mixin TeamMixin {
 
   void getTeams(HomeCubit homeCubit) async {
     try {
-      final localTeams = await dbHelper.getTeams();
+      final localTeams = await homeCubit.appRepository.getTeams();
       if (localTeams.isEmpty) {
         allTeam = TeamsDataModel.fromJson(AppConstants.teamsdata).data ?? [];
-        dbHelper.insertTeams(allTeam);
+        homeCubit.appRepository.insertAllTeams(allTeam);
       } else {
         allTeam = localTeams;
       }

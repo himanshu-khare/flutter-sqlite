@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
+
 class Player {
   Player({this.name, this.score,this.teamId});
   String? score;
-  String? name;
+  final String? name;
   int? teamId;
 
   Map<String, dynamic> toMap() {

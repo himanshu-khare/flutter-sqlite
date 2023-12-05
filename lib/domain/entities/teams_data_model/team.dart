@@ -1,11 +1,13 @@
+import 'package:flutter/material.dart';
+
 import 'player.dart';
 
 class Team {
-  int? team;
-  String? teamName;
-  String? color;
-  List<Player>? players;
-  int playerIndex = 0;
+  final int? team;
+  final String? teamName;
+  final String? color;
+  final List<Player>? players;
+  int playerIndex;
 
   Team({this.team, this.teamName, this.color, this.players,this.playerIndex=0});
   Map<String, dynamic> toMap() {
